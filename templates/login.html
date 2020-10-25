@@ -1,0 +1,36 @@
+{% extends "header.html" %}
+
+{% block content %}
+
+<div class="container p-5 my-0 border bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-center">
+        <h4 style="color: white;">เข้าสู่ระบบ</h4>
+    </nav>
+    
+    <div class="card p-5 bg-light text-dark">
+        <form method="POST">
+            <div class="form-group">
+                <label class="control-label" for="email">E-mail</label>
+                <div class="controls">
+                    <input type="text" id="email" name="email" placeholder="" class="input-xlarge"required>   
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="password">Password</label>
+                <div class="controls">
+                    <input type="password" id="password" name="password" placeholder="" class="input-xlarge"required>   
+                </div>
+            </div>
+            </br>
+            <div class="control-group">
+                <!-- Button -->
+                <div class="controls">
+                    <button class="btn btn-success">login</button>
+                </div>
+            </div>
+        </form>
+        {% include "_message.html" %}
+    </div>
+</div>
+
+{% endblock %}

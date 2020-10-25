@@ -1,0 +1,14 @@
+
+{% extends "header.html" %}
+
+{% block content %}
+<div align="center">
+    <img src="{{ url_for('static', filename = 'images/image.jpg') }}" style="margin-top: 30px;width:50%;height: 50%;border-radius: 20px;" alt="User Image"/>
+    
+   <h4>ผลลัพธ์ = {{predict_result}}</h4>
+
+   <button type="button"  class="btn btn-primary"><a style="color:white;" href="{{ url_for('fishclassification_search') }}">เลือกรูปใหม่</a></button>
+        
+</div>
+
+{% endblock %}

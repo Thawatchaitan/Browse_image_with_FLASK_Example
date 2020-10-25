@@ -1,0 +1,95 @@
+{% extends "header.html" %}
+
+{% block content %}
+    <style>
+        h1 {
+        color: rgb(89, 92, 231);
+        text-align: center;
+        } 
+        .image-preview{
+            width: 300px;
+            min-height: 100px;
+            border: 2px solid #dddddd;
+            margin-top: 15px;
+
+            /*Default text*/
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #cccccc;
+        }
+        .image-preview__image{
+            display: none;
+            width: 100%;
+        }
+        #custom-button{
+            padding: 10px;
+            color:white;
+            background-color: #009578;
+            border: 1px solid #007;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #custom-button.hover{
+            background-color:#00b28f;
+        }
+        #custom-text{
+            margin-left: 10px;
+            font-family:sans-serif;
+            color: #aaa;
+        }
+    </style>
+<div class="container p-5 my-0 border"> 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-center">
+        <h4 style="color: white;">ใส่ภาพเพื่อค้นหา</h4>
+    </nav>
+    <form class="md-form" action="{{url_for('upload')}}" method="POST" enctype="multipart/form-data">
+        <center>
+            <div class="card bg-light text-dark">
+                <div class="card-body">
+                    <div class="image-preview" id="imagePreview">
+                        <img src="" alt="Image Preview" class="image-preview__image">
+                        <span class="image-preview__default-text">Image Preview</span>
+                    </div>
+                    <div style="color: black; margin-top: 50px; ">
+                        <span for="file" class="btn btn-default">เลือกรูปภาพที่ต้องการตรวจจับ</span>
+                        <input type="file" name="image" id="inpFile" accept=".jpg, .jpeg" required>
+                        <input type="submit" class="btn btn-success" value="Submit"></input>
+                    </div>
+                </div>
+            </div>
+        </center>   
+    </form>
+
+
+    <script>
+        const inpFile = document.getElementById("inpFile");
+        const previewContainer = document.getElementById("imagePreview");
+        const previewImage = previewContainer.querySelector(".image-preview__image");
+        const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+
+        inpFile.addEventListener("change",function(){
+            const file = this.files[0];
+
+            if(file){
+                const reader = new FileReader();
+
+                previewDefaultText.style.display = "none";
+                previewImage.style.display = "block";
+
+                reader.addEventListener("load",function(){
+                    previewImage.setAttribute("src",this.result);
+                });
+
+                reader.readAsDataURL(file)
+            }else{
+                previewDefaultText.style.display = null;
+                previewImage.style.display = null;
+                previewImage.setAttribute("src","");
+            }
+        });
+    </script>
+</div>
+
+{% endblock %}

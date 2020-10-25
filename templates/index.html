@@ -1,0 +1,40 @@
+{% extends "header.html" %}
+
+{% block content %}
+		
+<div class="container p-5 my-0 border">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-center">
+        <h4 style="color: white;">ทดสอบดึงข้อมูลปลา</h4>
+    </nav>
+    <div class="card p-5 bg-light text-dark">
+        <div class="row">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                      <th>ลำดับ</th>
+                      <th>ชื่อ</th>
+                      <th>ชื่อสามัญ</th>
+                      <th>ลักษณะ</th>
+                      <th>อาหารปลา</th>
+                      <th>การเลี้ยงในตู้</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for row in datas %}
+                        <tr>
+                            <td>{{row.0}}</td>
+                            <td>{{row.1}}</td>
+                            <td>{{row.2}}</td>
+                            <td>{{row.3}}</td>
+                            <td>{{row.4}}</td>
+                            <td>{{row.5}}</td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+      </div>
+    </div>
+</div>
+
+
+{% endblock %}

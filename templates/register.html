@@ -1,0 +1,83 @@
+{% extends "header.html" %}
+
+{% block content %}
+
+<div class="container p-5 my-0 border bg-light" >
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-center">
+        <h4 style="color: white;">ลงทะเบียน</h4>
+    </nav>
+        <div class="card p-5 bg-light text-dark">
+            <form class="form-horizontal" action='' method="POST">
+                <fieldset>
+                    <div class="control-group">
+                        <!-- Userame -->
+                        <label class="control-label" for="username">Username</label>
+                        <div class="controls">
+                            <input type="text" id="username" name="username" placeholder="" class="input-xlarge"required>   
+                        </div>
+                    </div>
+                    <div class="control-group"> 
+                        <!-- Surname -->
+                        <label class="control-label" for="surname">Surname</label>
+                        <div class="controls">
+                            <input type="text" id="surname" name="surname" placeholder="" class="input-xlarge" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!-- Address -->
+                        <label class="control-label" for="address">Address</label>
+                        <div class="controls">
+                            <input type="text" id="address" name="address" placeholder="" class="input-xlarge"required>
+                        </div>
+                    </div>        
+                    <div class="control-group">
+                        <!-- E-mail -->
+                        <label class="control-label" for="email">E-mail</label>
+                        <div class="controls">
+                            <input type="text" id="email" name="email" placeholder="" class="input-xlarge"required>
+                        </div>
+                    </div>
+ 
+                    <div class="control-group">
+                        <!-- Phone -->
+                        <label class="control-label" for="phone">Phone</label>
+                        <div class="controls">
+                            <input type="text" id="phone" name="phone" placeholder="" class="input-xlarge"required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <!-- Store name -->
+                        <label class="control-label" for="Store_name">Store name</label>
+                        <div class="controls">
+                            <input type="text" id="Store_name" name="Store_name" placeholder="" class="input-xlarge"required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <!-- Password-->
+                        <label class="control-label" for="password">Password</label>
+                        <div class="controls">
+                            <input type="password" id="password" name="password" placeholder="" class="input-xlarge"required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!-- Password-->
+                        <label class="control-label" for="password_confirm">Password (Confirm)</label>
+                        <div class="controls">
+                            <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">
+                        </div>
+                    </div>       
+                </br>
+                    <div class="control-group">
+                        <!-- Button -->
+                        <div class="controls">
+                            <button class="btn btn-success">Register</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+</div>
+{% include "_message.html" %}
+{% endblock %}
