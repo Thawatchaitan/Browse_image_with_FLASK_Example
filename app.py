@@ -8,7 +8,8 @@ from passlib.hash import sha256_crypt
 import numpy as np
 import os
 import pymysql
-
+import uuid
+import datetime
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['UPLOAD_FOLDER'] = "/static/images"
@@ -72,7 +73,9 @@ def register():
         if password == password_confirm:
             with connect.cursor() as cursor:
                 cur = connect.cursor() 
-                cur.execute("INSERT INTO seller(Seller_Name,Seller_Last,Address,Phone_Number,Email,Password,Store_Name) VALUES(%s,%s,%s,%s,%s,%s,%s)" , (username,surname,address,phone,email,secure_password,store_name))
+                sql = "INSERT INTO seller(Seller_Name,Seller_Last,Address,Phone_Number,Email,Password,Store_Name) VALUES(%s,%s,%s,%s,%s,%s,%s)"
+                val = (username,surname,address,phone,email,secure_password,store_name)
+                cur.execute(sql , val)
                 connect.commit()
                 return redirect(url_for("login"))
         else:
@@ -123,6 +126,40 @@ def showData():
         cur.execute("select * from fishdb where No = "+ pos)
         rows = cur.fetchall()
     return render_template("result.html", predict_result = rows)
+################################################
+@app.route("/add_product", methods=["GET", "POST"])
+def add_product():
+    if g.user:
+        if request.method == "POST":
+            if request.files:
+                name = "static\\images\\product_images\\"+str(uuid.uuid4())+".jpg"
+                file = request.files["image"]
+                filepath = name
+                file.save(filepath)
+                with connect.cursor() as cursor:
+                    cur = connect.cursor() 
+                    Seller_Email = str(g.user)
+                    Fish_Name = str(request.form.get("Fish_name"))
+                    Price = request.form.get("Price")
+                    Amount = request.form.get("Amount")
+                    sql = "INSERT INTO product VALUES(%s,%s,%s,%s,%s)"
+                    val = (Seller_Email,Fish_Name,float(Price),int(Amount),name)
+                    print(val)
+                    cur.execute(sql,val)
+                    connect.commit()
+                return redirect(url_for('profile'))
+    else:
+        return redirect(url_for('home'))
+        
+################################################
+@app.route("/profile")
+def profile():
+    if g.user:
+        with connect.cursor() as cursor:
+            cur = connect.cursor()
+            cur.execute("SELECT * FROM product WHERE Seller_Email = %s" , (g.user))
+            get_user = cur.fetchall()             
+        return render_template("profile.html",user = session['user'],profile = get_user)
 ################################################
 if __name__ == "__main__":
     app.secret_key = "fhu1234567803102541fhu"

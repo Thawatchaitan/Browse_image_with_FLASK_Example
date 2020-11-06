@@ -1,0 +1,206 @@
+{% extends "header_login.html" %}
+
+{% block content %}
+<style>
+    .image-preview{
+        width: 300px;
+        min-height: 100px;
+        border: 2px solid #dddddd;
+        margin-top: 15px;
+
+        /*Default text*/
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #cccccc;
+    }
+    .image-preview__image{
+        display: none;
+        width: 100%;
+    }
+    #custom-button{
+        padding: 10px;
+        color:white;
+        background-color: #009578;
+        border: 1px solid #007;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    #custom-button.hover{
+        background-color:#00b28f;
+    }
+    #custom-text{
+        margin-left: 10px;
+        font-family:sans-serif;
+        color: #aaa;
+    }
+</style>
+<style>
+.btn-bubble {
+  color: white;
+  background-color: #77b11c;
+  background-repeat: no-repeat;
+}
+.btn-bubble:hover, .btn-bubble:focus {
+  -webkit-animation: bubbles 1s forwards ease-out;
+          animation: bubbles 1s forwards ease-out;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) -7% 86% / 0.96em 0.96em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) 57% 97% / 0.68em 0.68em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) 108% 143% / 0.59em 0.59em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) 11% 103% / 1.17em 1.17em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) 36% 95% / 0.79em 0.79em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) 85% 86% / 0.95em 0.95em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) 32% 107% / 1.05em 1.05em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) 87% 88% / 0.86em 0.86em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) -8% 103% / 0.89em 0.89em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) 63% 93% / 0.87em 0.87em, radial-gradient(circle at center, rgba(0, 0, 0, 0) 30%, #eeeeff 60%, #eeeeff 65%, rgba(0, 0, 0, 0) 70%) 73% 89% / 1.16em 1.16em;
+  background-color: #77b11c;
+  background-repeat: no-repeat;
+}
+
+@-webkit-keyframes bubbles {
+  100% {
+    background-position: -17% 38%, 56% -128%, 116% -143%, 20% 47%, 28% 58%, 80% -327%, 35% -332%, 90% -219%, -15% 37%, 64% -301%, 67% -206%;
+    box-shadow: inset 0 -6.5em 0 #0072c4;
+  }
+}
+
+@keyframes bubbles {
+  100% {
+    background-position: -17% 38%, 56% -128%, 116% -143%, 20% 47%, 28% 58%, 80% -327%, 35% -332%, 90% -219%, -15% 37%, 64% -301%, 67% -206%;
+    box-shadow: inset 0 -6.5em 0 #0072c4;
+  }
+}
+
+
+</style>
+<head>
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+</head>
+<div class="container p-5 my-0 border bg">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-center">
+        <h4 style="color: white;">{{profile[0][6]}}</h4>
+    </nav>
+    <div class="card p-5 bg-light text-dark">
+        <div class="row">
+            <div class="col" align="center"><img src="static\images\photo-2.png" width="100" height="100"></div>
+            <div class="col">
+                <div class="row"><h5>Name : {{profile[0][0]}} {{profile[0][1]}}</h5></div>
+                <div class="row"><h5>Address : {{profile[0][2]}}</h5></div>
+                <div class="row"><h5>Contact : {{profile[0][3]}}</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="my-5">
+        <nav class="navbar my navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-between">
+            
+            <h4 style="color: white;">PRODUCT</h4>
+            <ul class="navbar-nav" >
+                <li class="nav-item active">
+                    <a class="nav-link btn btn-bubble" type="button" style='font-size:24px;color:white' data-toggle="modal" data-target="#myModal">ADD PRODUCT</a>
+                    <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                          <!-- Modal content-->
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Add product</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal" action="{{url_for('add_product')}}" method="POST" enctype="multipart/form-data">
+                                    <fieldset>
+                                        <div class="control-group">
+                                            <!-- Fish name -->
+                                            <label class="control-label" for="Fish_name">Fish name</label>
+                                            <div class="controls">
+                                                <input type="text" id="Fish_name" name="Fish_name" placeholder="" class="input-xlarge"required>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <!-- Price -->
+                                            <label class="control-label" for="Price">Price</label>
+                                            <div class="controls">
+                                                <input type="text" id="Price" name="Price" placeholder="" class="input-xlarge"required>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <!-- Amount -->
+                                            <label class="control-label" for="Amount">Amount</label>
+                                            <div class="controls">
+                                                <input type="text" id="Amount" name="Amount" placeholder="" class="input-xlarge"required>
+                                            </div>
+                                        </div>
+                                    </br>
+                                        <div id="browseImage">
+                                                <center>
+                                                    <div class="card bg-light text-dark">
+                                                        <div class="card-body">
+                                                            <div class="image-preview" id="imagePreview">
+                                                                <img src="" alt="Image Preview" class="image-preview__image">
+                                                                <span class="image-preview__default-text">Image Preview</span>
+                                                            </div>
+                                                            <div style="color: black; margin-top: 50px; ">
+                                                                <input type="file" name="image" id="inpFile" accept=".jpg, .jpeg" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </center>   
+                                            <script>
+                                                const inpFile = document.getElementById("inpFile");
+                                                const previewContainer = document.getElementById("imagePreview");
+                                                const previewImage = previewContainer.querySelector(".image-preview__image");
+                                                const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+                                        
+                                                inpFile.addEventListener("change",function(){
+                                                    const file = this.files[0];
+                                        
+                                                    if(file){
+                                                        const reader = new FileReader();
+                                        
+                                                        previewDefaultText.style.display = "none";
+                                                        previewImage.style.display = "block";
+                                        
+                                                        reader.addEventListener("load",function(){
+                                                            previewImage.setAttribute("src",this.result);
+                                                        });
+                                        
+                                                        reader.readAsDataURL(file)
+                                                    }else{
+                                                        previewDefaultText.style.display = null;
+                                                        previewImage.style.display = null;
+                                                        previewImage.setAttribute("src","");
+                                                    }
+                                                });
+                                            </script>   
+                                        </div>
+ 
+                                    </br>
+                                        <div class="control-group">
+                                            <!-- Button -->
+                                            <div class="controls">
+                                                <button type="submit" class="btn btn-success">Submit</button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                      
+                        </div>
+                      </div>
+                      
+                </li>
+            </ul>
+        </nav>
+        {% for row in profile %}
+        <div class="card p-5 bg-light text-dark">
+            <div class="row">
+                <div class="col" align="center"><img src={{row.4}} width="100" height="100"></div>
+                <div class="col">
+                    <div class="row"><h5>Name :{{row.1}}</h5></div>
+                    <div class="row"><h5>Price : {{row.2}}</h5></div>
+                    <div class="row"><h5>Amount : {{row.3}}</h5></div>
+                </div>
+            </div>
+        </div> 
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
