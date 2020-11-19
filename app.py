@@ -9,7 +9,7 @@ import numpy as np
 import os
 import pymysql
 import uuid
-import datetime
+
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['UPLOAD_FOLDER'] = "/static/images"
@@ -27,6 +27,7 @@ def before_request():
 @app.route("/dropsession")
 def dropsession():
     session.pop('user',None)
+    session.clear()
     return redirect(url_for('home'))
 
 ################################################
@@ -113,44 +114,104 @@ def now_login():
 ################################################
 @app.route("/showData")
 def showData():
-    #loadimage, resize, to array
-    img = load_img("./static/images/image.jpg", target_size = (300, 300))    
-    img = img_to_array(img)        
-    img = img.reshape(1, 300, 300, 3)
-    img = img.astype('uint8')
-    result = model.predict(img)
-    predict_result = np.argmax(result[0])
-    with connect.cursor() as cursor:
-        cur = connect.cursor() 
-        pos = str(predict_result)
-        cur.execute("select * from fishdb where No = "+ pos)
-        rows = cur.fetchall()
-    return render_template("result.html", predict_result = rows)
+    if g.user:
+        #loadimage, resize, to array
+        img = load_img("./static/images/image.jpg", target_size = (300, 300))    
+        img = img_to_array(img)        
+        img = img.reshape(1, 300, 300, 3)
+        img = img.astype('uint8')
+        result = model.predict(img)
+        print(result)
+        predict_result = np.argmax(result[0])
+        with connect.cursor() as cursor:
+            cur = connect.cursor() 
+            pos = int(predict_result)+1
+            print(pos)
+            cur.execute("select * from fishdb where No = %s",(pos))
+            fish = cur.fetchall()
+            cur.execute("select * from product where Fish_name LIKE %s",("%"+fish[0][1]+"%"))
+            store = cur.fetchall()
+            cur.execute("SELECT * FROM seller WHERE Email = %s" , (g.user))     
+            get_profile = cur.fetchall() 
+        return render_template("result_login.html", predict_result = fish,user = session['user'],store = store,profile = get_profile)
+    else:
+        #loadimage, resize, to array
+        img = load_img("./static/images/image.jpg", target_size = (300, 300))    
+        img = img_to_array(img)        
+        img = img.reshape(1, 300, 300, 3)
+        img = img.astype('uint8')
+        result = model.predict(img)
+        predict_result = np.argmax(result[0])
+        with connect.cursor() as cursor:
+            cur = connect.cursor()
+            pos = str(predict_result)
+            cur.execute("select * from fishdb where No = %s",(pos))
+            fish = cur.fetchall()
+            cur.execute("select * from product where Fish_name = %s",(fish[0][1]))
+            store = cur.fetchall()
+            print(store)
+    return render_template("result.html", predict_result = fish,store = store)
 ################################################
 @app.route("/add_product", methods=["GET", "POST"])
 def add_product():
     if g.user:
         if request.method == "POST":
-            if request.files:
-                name = "static\\images\\product_images\\"+str(uuid.uuid4())+".jpg"
-                file = request.files["image"]
-                filepath = name
-                file.save(filepath)
-                with connect.cursor() as cursor:
-                    cur = connect.cursor() 
-                    Seller_Email = str(g.user)
-                    Fish_Name = str(request.form.get("Fish_name"))
-                    Price = request.form.get("Price")
-                    Amount = request.form.get("Amount")
-                    sql = "INSERT INTO product VALUES(%s,%s,%s,%s,%s)"
-                    val = (Seller_Email,Fish_Name,float(Price),int(Amount),name)
-                    print(val)
-                    cur.execute(sql,val)
-                    connect.commit()
+            Seller_Email = str(g.user)
+            Fish_Name = str(request.form.get("Fish_name"))
+            Price = request.form.get("Price")
+            Amount = request.form.get("Amount")
+            if Price.isnumeric() and Amount.isnumeric():
+                if request.files:
+                    name = "static\\images\\product_images\\"+str(uuid.uuid4())+".jpg"
+                    file = request.files["image"]
+                    filepath = name
+                    file.save(filepath)
+                    with connect.cursor() as cursor:
+                        cur = connect.cursor() 
+                        sql = "INSERT INTO product(Seller_Email,Fish_name,Price,Amount,Images) VALUES(%s,%s,%s,%s,%s)"
+                        val = (Seller_Email,Fish_Name,float(Price),int(Amount),name)
+                        print(val)
+                        cur.execute(sql,val)
+                        connect.commit()
+                    return redirect(url_for('profile'))
+            else:
+                print(Price.isnumeric())
+                print(Amount.isnumeric())
+                flash("Price or Amount not number","warning")
                 return redirect(url_for('profile'))
     else:
         return redirect(url_for('home'))
-        
+################################################
+@app.route("/update_product", methods=["GET", "POST"])
+def update_product():
+    if g.user:
+        if request.method == "POST":
+            No = request.form.get("No")
+            Fish_name = request.form.get("Fish_name")
+            Price = request.form.get("Price")
+            Amount = request.form.get("Amount")
+            if Price.isnumeric() and Amount.isnumeric():
+                    cur = connect.cursor() 
+                    with connect.cursor() as cursor:
+                        sql = "UPDATE product SET Fish_name=%s , Price=%s, Amount=%s WHERE No = %s"
+                        val = (Fish_name, Price, Amount,No)
+                        cur.execute(sql,val)
+                        connect.commit()
+                    return redirect(url_for('profile'))
+            else:
+                print(Price.isnumeric())
+                print(Amount.isnumeric())
+                flash("Price or Amount not number","warning")
+                return redirect(url_for('profile'))
+################################################
+@app.route("/delete_product/<string:id_data>", methods=["GET", "POST"])
+def delete_product(id_data):
+    if g.user:
+        with connect.cursor() as cursor:
+            cur = connect.cursor()
+            cur.execute("DELETE FROM product where No=%s",(id_data))
+            connect.commit()
+        return redirect(url_for('profile'))
 ################################################
 @app.route("/profile")
 def profile():
@@ -158,8 +219,10 @@ def profile():
         with connect.cursor() as cursor:
             cur = connect.cursor()
             cur.execute("SELECT * FROM product WHERE Seller_Email = %s" , (g.user))
-            get_user = cur.fetchall()             
-        return render_template("profile.html",user = session['user'],profile = get_user)
+            get_product = cur.fetchall() 
+            cur.execute("SELECT * FROM seller WHERE Email = %s" , (g.user))     
+            get_profile = cur.fetchall()
+        return render_template("profile.html",user = session['user'],product = get_product,profile = get_profile)
 ################################################
 if __name__ == "__main__":
     app.secret_key = "fhu1234567803102541fhu"

@@ -1,0 +1,63 @@
+
+{% extends "header_login.html" %}
+
+{% block content %}
+<div align="center">
+    
+    
+    <div class="container p-5 my-0 border bg">
+        <div class="container p-5 my-0 border bg-light" style="border-radius: 20px;">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-center" style="border-radius: 20px;">
+                <h4 style="color: white;">{{predict_result[0][1]}}</h4>
+            </nav>
+            <img src="{{ url_for('static', filename = 'images/image.jpg') }}"   style="margin-top: 30px;width:100%;height: 100%;border-radius: 20px;" alt="User Image"/>
+        </br></br></br>
+            <div class="row" style="text-align: left">
+                <div class="col">
+                    <div class="row"><h5>ชื่อสามัญ</h5></div>
+                    <div class="row"><h5 style="margin-left:50px;">{{predict_result[0][2]}}</h5></div>
+                    <div class="row"><h5>รายละเอียด</h5></div> 
+                    <div class="row"><h5 style="margin-left:50px;">{{predict_result[0][3]}}</h5></div>
+                    <div class="row"><h5>อาหาร</h5></div>
+                    <div class="row"><h5 style="margin-left:50px;">{{predict_result[0][4]}}</h5></div>
+                    <div class="row"><h5>การจัดตู้ปลา</h5></div>
+                    <div class="row"><h5 style="margin-left:50px;">{{predict_result[0][5]}}</h5></div>
+                </div>
+            </div>
+        </br>
+            <div class="justify-content-left">
+                <button type="button"  class="btn btn-primary"><a style="color:white;" href="{{ url_for('fishclassification_search') }}">เลือกรูปใหม่</a></button>
+            </div>
+        </div>
+        <div class="card p-5 my-5 bg- text-dark" style="background-color:#3EABCB;border-radius:20px;">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-center" style="border-radius: 20px;">
+                <h4 style="color: white;">ร้านค้าที่ขายปลา {{predict_result[0][1]}}</h4>
+            </nav>
+            {% for row in store %}
+            <div class="card p-5 bg-light text-dark" style="margin-top: 20px;border-radius: 20px;">
+                <div class="row">
+                    <div class="col" align="center">
+                        <img src={{row.5}} width="304" height="236" style="border-radius: 20px;">
+                    </div>
+                    <div class="col">
+                        <div class="row"><h5>Name :{{row.2}}</h5></div>
+                        <div class="row"><h5>Price : {{row.3}}</h5></div>
+                        <div class="row"><h5>Amount : {{row.4}}</h5></div>
+                        <div class="row"><h5>Store : {{profile[0][6]}}</h5></div>
+                        <div class="row"><h5>Contact</h5></div>
+                        <div class="row"><h5 style="margin-left:50px;">{{profile[0][3]}}</h5></div>
+                        <div class="row"><h5 style="margin-left:50px;">{{profile[0][2]}}</h5></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        
+    </div>
+
+    
+        
+</div>
+
+{% endblock %}

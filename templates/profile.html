@@ -71,7 +71,7 @@
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
 </head>
-<div class="container p-5 my-0 border bg">
+<div class="container p-5 my-0 border bg"style="padding: 15%;">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-center">
         <h4 style="color: white;">{{profile[0][6]}}</h4>
     </nav>
@@ -86,121 +86,174 @@
         </div>
     </div>
     <div class="my-5">
-        <nav class="navbar my navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-between">
-            
-            <h4 style="color: white;">PRODUCT</h4>
-            <ul class="navbar-nav" >
-                <li class="nav-item active">
-                    <a class="nav-link btn btn-bubble" type="button" style='font-size:24px;color:white' data-toggle="modal" data-target="#myModal">ADD PRODUCT</a>
-                    <div id="myModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog">
-                          <!-- Modal content-->
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Add product</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal" action="{{url_for('add_product')}}" method="POST" enctype="multipart/form-data">
-                                    <fieldset>
-                                        <div class="control-group">
-                                            <!-- Fish name -->
-                                            <label class="control-label" for="Fish_name">Fish name</label>
-                                            <div class="controls">
-                                                <input type="text" id="Fish_name" name="Fish_name" placeholder="" class="input-xlarge"required>
+        <div class="card p-5 bg- text-dark" style="background-color:#3EABCB;border-radius:20px;">
+            {% include "_message.html" %}
+            <nav class="navbar my navbar-expand-lg navbar-dark bg-dark border-bottom justify-content-between" style="border-radius: 20px;">
+                <h4 style="color: white;">PRODUCT</h4>
+                <ul class="navbar-nav" >
+                    <li class="nav-item active">
+                        <a class="nav-link btn btn-bubble" type="button" style='font-size:24px;color:white' data-toggle="modal" data-target="#add_product">ADD PRODUCT</a>
+                        <div id="add_product" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title">Add product</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal" action="{{url_for('add_product')}}" method="POST" enctype="multipart/form-data">
+                                        <fieldset>
+                                            <div class="control-group">
+                                                <!-- Fish name -->
+                                                <label class="control-label" for="Fish_name">Fish name</label>
+                                                <div class="controls">
+                                                    <input type="text" id="Fish_name" name="Fish_name" placeholder="" class="input-xlarge"required>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <!-- Price -->
-                                            <label class="control-label" for="Price">Price</label>
-                                            <div class="controls">
-                                                <input type="text" id="Price" name="Price" placeholder="" class="input-xlarge"required>
+                                            <div class="control-group">
+                                                <!-- Price -->
+                                                <label class="control-label" for="Price">Price</label>
+                                                <div class="controls">
+                                                    <input type="text" id="Price" name="Price" placeholder="" class="input-xlarge"required>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <!-- Amount -->
-                                            <label class="control-label" for="Amount">Amount</label>
-                                            <div class="controls">
-                                                <input type="text" id="Amount" name="Amount" placeholder="" class="input-xlarge"required>
+                                            <div class="control-group">
+                                                <!-- Amount -->
+                                                <label class="control-label" for="Amount">Amount</label>
+                                                <div class="controls">
+                                                    <input type="text" id="Amount" name="Amount" placeholder="" class="input-xlarge"required>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </br>
-                                        <div id="browseImage">
-                                                <center>
-                                                    <div class="card bg-light text-dark">
-                                                        <div class="card-body">
-                                                            <div class="image-preview" id="imagePreview">
-                                                                <img src="" alt="Image Preview" class="image-preview__image">
-                                                                <span class="image-preview__default-text">Image Preview</span>
-                                                            </div>
-                                                            <div style="color: black; margin-top: 50px; ">
-                                                                <input type="file" name="image" id="inpFile" accept=".jpg, .jpeg" required>
+                                        </br>
+                                            <div id="browseImage">
+                                                    <center>
+                                                        <div class="card bg-light text-dark">
+                                                            <div class="card-body">
+                                                                <div class="image-preview" id="imagePreview">
+                                                                    <img src="" alt="Image Preview" class="image-preview__image">
+                                                                    <span class="image-preview__default-text">Image Preview</span>
+                                                                </div>
+                                                                <div style="color: black; margin-top: 50px; ">
+                                                                    <input type="file" name="image" id="inpFile" accept=".jpg, .jpeg" required>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </center>   
-                                            <script>
-                                                const inpFile = document.getElementById("inpFile");
-                                                const previewContainer = document.getElementById("imagePreview");
-                                                const previewImage = previewContainer.querySelector(".image-preview__image");
-                                                const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-                                        
-                                                inpFile.addEventListener("change",function(){
-                                                    const file = this.files[0];
-                                        
-                                                    if(file){
-                                                        const reader = new FileReader();
-                                        
-                                                        previewDefaultText.style.display = "none";
-                                                        previewImage.style.display = "block";
-                                        
-                                                        reader.addEventListener("load",function(){
-                                                            previewImage.setAttribute("src",this.result);
-                                                        });
-                                        
-                                                        reader.readAsDataURL(file)
-                                                    }else{
-                                                        previewDefaultText.style.display = null;
-                                                        previewImage.style.display = null;
-                                                        previewImage.setAttribute("src","");
-                                                    }
-                                                });
-                                            </script>   
-                                        </div>
- 
-                                    </br>
-                                        <div class="control-group">
-                                            <!-- Button -->
-                                            <div class="controls">
-                                                <button type="submit" class="btn btn-success">Submit</button>
+                                                    </center>   
+                                                <script>
+                                                    const inpFile = document.getElementById("inpFile");
+                                                    const previewContainer = document.getElementById("imagePreview");
+                                                    const previewImage = previewContainer.querySelector(".image-preview__image");
+                                                    const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+                                            
+                                                    inpFile.addEventListener("change",function(){
+                                                        const file = this.files[0];
+                                            
+                                                        if(file){
+                                                            const reader = new FileReader();
+                                            
+                                                            previewDefaultText.style.display = "none";
+                                                            previewImage.style.display = "block";
+                                            
+                                                            reader.addEventListener("load",function(){
+                                                                previewImage.setAttribute("src",this.result);
+                                                            });
+                                            
+                                                            reader.readAsDataURL(file)
+                                                        }else{
+                                                            previewDefaultText.style.display = null;
+                                                            previewImage.style.display = null;
+                                                            previewImage.setAttribute("src","");
+                                                        }
+                                                    });
+                                                </script>   
                                             </div>
-                                        </div>
-                                    </fieldset>
-                                </form>
+                        
+                                        </br>
+                                            <div class="control-group">
+                                                <!-- Button -->
+                                                <div class="controls">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                      
                         </div>
-                      </div>
-                      
-                </li>
-            </ul>
-        </nav>
-        {% for row in profile %}
-        <div class="card p-5 bg-light text-dark">
-            <div class="row">
-                <div class="col" align="center"><img src={{row.4}} width="100" height="100"></div>
-                <div class="col">
-                    <div class="row"><h5>Name :{{row.1}}</h5></div>
-                    <div class="row"><h5>Price : {{row.2}}</h5></div>
-                    <div class="row"><h5>Amount : {{row.3}}</h5></div>
+                    </li>
+                </ul>
+            </nav>
+            {% for row in product %}
+            <div class="card p-5 bg-light text-dark" style="margin-top: 20px;border-radius: 20px;padding: 10%">
+                <div class="row">
+                    <div class="col" align="center"><img src={{row.5}} width="304" height="236" style="border-radius: 20px;padding:20%"></div>
+                    <div class="col">
+                        <div class="row"><h5>Name :{{row.2}}</h5></div>
+                        <div class="row"><h5>Price : {{row.3}}</h5></div>
+                        <div class="row"><h5>Amount : {{row.4}}</h5></div>
+                        <div class="row">
+                            <a type="button" class="btn btn-warning" style="margin-top:20px; margin-right:10px" data-toggle="modal" data-target="#edit_product{{row.0}}">Edit</a>
+                            <div id="edit_product{{row.0}}" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h4 class="modal-title">UPDATE</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal" action="{{url_for('update_product')}}" method="POST" enctype="multipart/form-data">
+                                                <fieldset>
+                                                    <input type="hidden" name="No" value="{{row.0}}">
+                                                    <div class="control-group">
+                                                        <!-- Fish name -->
+                                                        <label class="control-label" for="Fish_name">Fish name</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="Fish_name" name="Fish_name" placeholder="" class="input-xlarge" value="{{row.2}}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <!-- Price -->
+                                                        <label class="control-label" for="Price">Price</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="Price" name="Price" placeholder="" class="input-xlarge" value="{{row.3}}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <!-- Amount -->
+                                                        <label class="control-label" for="Amount">Amount</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="Amount" name="Amount" placeholder="" class="input-xlarge" value="{{row.4}}" required>
+                                                        </div>
+                                                    </div>
+                                                </br>
+                                                </br>
+                                                    <div class="control-group">
+                                                        <!-- Button -->
+                                                        <div class="controls">
+                                                            <button type="submit" class="btn btn-success">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a type="button" class="btn btn-danger" style="margin-top:20px" href="/delete_product/{{row.0}}" onclick="return confirm('Are you sure you want to delete')">Delete</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div> 
-        {% endfor %}
-    </div>
+            {% endfor %}            
+        </div>
 
+    </div>
 </div>
 {% endblock %}
